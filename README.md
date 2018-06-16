@@ -12,7 +12,7 @@
 >coming soon
 
 
-<h2><b><u>How It Works</u></b></h2>
+<h2><b><u>How To Use</u></b></h2>
 
 > Rename the file path to the working path of your hexcode.txt file to use this
 
