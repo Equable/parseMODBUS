@@ -48,7 +48,7 @@ public class SerialRequest {
 
 
     public static void main(String[] args) throws Exception {
-        File file = new File("C:\\Users\\escno\\Desktop\\1stCommEstablished_5_30_18PCB-Log.txt");
+        File file = new File("C:\\Users\\escno\\Desktop\\1stCommEstablished_5_30_18PCB-Log.txt"); //change your path here to the hexcode.txt directory
         Scanner sc = new Scanner(file);
         int n = 3;
         int ArrPos = 14;
