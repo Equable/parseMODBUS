@@ -107,26 +107,19 @@ class ParseStringRequest {
                         tracker = 2;
 
                         if (Iterables.getLast(ParsedReq.get("InstTracker")) != 0) {
-                            //Takes value of instance tracker and uses it. It then clears as it should not need
-                            //to be used for in this Request position again.
+
                             tracker = Iterables.getLast(ParsedReq.get("InstTracker"));
                             ParsedReq.removeAll("InstTracker");
 
                         }
                         while (tracker > 0) {
-                            try {
-                                String tmp = Integer.toHexString(Iterables.getLast(ParsedReq.get("add")));
-                                tmp = tmp + array[i];
-                                tracker--;
-                                ParsedReq.put("add", Integer.parseInt(tmp, 16));
-                                i++;
-                            } catch (ArrayIndexOutOfBoundsException e) {
-                                ParsedReq.put("Error", 1);
-                                ParsedReq.put("ReqPos", 0);
-                                ParsedReq.put("InstTracker", tracker);
-                                ParsedReq.put("attempt", (Iterables.getLast(ParsedReq.get("attempt")) + 1));
-                                return ParsedReq;
-                            }
+
+                            String tmp = Integer.toHexString(Iterables.getLast(ParsedReq.get("add")));
+                            tmp = tmp + array[i];
+                            tracker--;
+                            ParsedReq.put("add", Integer.parseInt(tmp, 16));
+                            i++;
+
                             ParsedReq.removeAll("InstTracker");
                             ParsedReq.put("InstTracker", tracker);
                         }
@@ -217,16 +210,9 @@ class ParseStringRequest {
                     //
                     //**********************************************************************************************
                     case "bytes":
-                        try {
-                            ParsedReq.removeAll("bytes");
-                            ParsedReq.put("bytes", Integer.parseInt(array[i], 16));
-                            i++;
-                        } catch (ArrayIndexOutOfBoundsException e) {
-                            ParsedReq.put("Error", 1);
-                            ParsedReq.put("ReqPos", ReqPos);
-                            ParsedReq.put("attempt", (Iterables.getLast(ParsedReq.get("attempt")) + 1));
-                            return ParsedReq;
-                        }
+                        ParsedReq.removeAll("bytes");
+                        ParsedReq.put("bytes", Integer.parseInt(array[i], 16));
+                        i++;
 
                         break;
                     //**********************************************************************************************
