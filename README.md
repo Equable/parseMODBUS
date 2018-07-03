@@ -30,6 +30,9 @@
 
 <h2><b><u>Version</u></b></h2>
 
+>* 1.2 App UI
+>   * Now have new UI to select between Response and Request
+>   * Data for response will be put into table on new UI. (request to follow soon)
 >* 1.1 File Select
 >   * Can now select file on application run, no longer need to manually change path in code
 >   * Due to JDK 8, JFileChooser appears very tiny on high dpi screens. Will look into JavaFX at a later date.
