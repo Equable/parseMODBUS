@@ -1,7 +1,7 @@
 <h1><b>Parse MODBUS Protocol</b></h1>
 
 <h3><b>Author: Louis Huerta-Blake</b></h3>
-<h4><b>README Last Edited: 6/16/2018</b><h4>
+<h4><b>README Last Edited: 7/2/2018</b><h4>
 
 <h2><b><u>Summary</u></b></h2>
 
