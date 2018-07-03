@@ -27,7 +27,10 @@
 
 <h2><b><u>Version</u></b></h2>
 
+>* 1.1 File Select
+>   * Can now select file on application run, no longer need to manually change path in code
+>   * Due to JDK 8, JFileChooser appears very tiny on high dpi screens. Will look into JavaFX at a later date.
 >* 1.0 Parses all requests within the hexcode.txt file based on their function code
->   *only affects the [] values. <> are requests
->   *ability to to parse responses will be next followed by filtering
+>   * only affects the [] values. <> are requests
+>   * ability to to parse responses will be next followed by filtering
 

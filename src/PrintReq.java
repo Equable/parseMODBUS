@@ -1,10 +1,8 @@
 import com.google.common.collect.Iterables;
-import com.sun.deploy.util.StringUtils;
 
 import java.util.ArrayList;
 
-public class printout {
-
+public class PrintReq {
     protected final static void ReqPrint() {
         ParseStringRequest PSR = new ParseStringRequest();
         ArrayList<String> Parsed = new ArrayList<String>();
@@ -176,4 +174,3 @@ public class printout {
         System.out.println(Div);
     }
 }
-

@@ -5,121 +5,122 @@ import com.google.common.collect.Multimap;
 import java.util.HashMap;
 import java.util.Map;
 
-class ParseStringRequest {
+class ParseStringResponse {
 
-    private static SerialRequest SRq = new SerialRequest();
+    private static SerialResponse SRq = new SerialResponse();
 
-    static Multimap<String, Integer> ParsedReq = ArrayListMultimap.create();
+    static Multimap<String, Integer> ParsedResp = ArrayListMultimap.create();
 
     static void InitializeMap() {
-        ParsedReq.clear();
-        ParsedReq.put("id", 0);
-        ParsedReq.put("fcn", 0);
-        ParsedReq.put("add", 0);
-        ParsedReq.put("value", 0);
-        ParsedReq.put("amounts", 0);
-        ParsedReq.put("status", 0);
-        ParsedReq.put("bytes", 0);
-        ParsedReq.put("bit", 0);
-        ParsedReq.put("values", 0);
-        ParsedReq.put("attempt", 0);
-        ParsedReq.put("ReqPos", 0);
-        ParsedReq.put("LastAt", 0);
-        ParsedReq.put("Error", 0);
-        ParsedReq.put("InstTracker", 0);
-        ParsedReq.put("line", 0);
+        ParsedResp.clear();
+        ParsedResp.put("id", 0);
+        ParsedResp.put("fcn", 0);
+        ParsedResp.put("add", 0);
+        ParsedResp.put("value", 0);
+        ParsedResp.put("amounts", 0);
+        ParsedResp.put("status", 0);
+        ParsedResp.put("bytes", 0);
+        ParsedResp.put("bit", 0);
+        ParsedResp.put("values", 0);
+        ParsedResp.put("attempt", 0);
+        ParsedResp.put("ReqPos", 0);
+        ParsedResp.put("LastAt", 0);
+        ParsedResp.put("Error", 0);
+        ParsedResp.put("InstTracker", 0);
+        ParsedResp.put("line", 0);
 
 
         return;
 
     }
 
-    private final static Map<String, String[]> ReqFcnCode = new HashMap<>();
+    private final static Map<String, String[]> RespFcnCode = new HashMap<>();
 
     static {
-        ReqFcnCode.put("1", new String[]{"add", "amounts", "end"});
-        ReqFcnCode.put("2", new String[]{"add", "amounts", "end"});
-        ReqFcnCode.put("3", new String[]{"add", "amounts", "end"});
-        ReqFcnCode.put("4", new String[]{"add", "amounts", "end"});
-        ReqFcnCode.put("5", new String[]{"add", "status", "end"});
-        ReqFcnCode.put("6", new String[]{"add", "value", "end"});
-        ReqFcnCode.put("15", new String[]{"add", "amounts", "bytes", "bit", "end"});
-        ReqFcnCode.put("16", new String[]{"add", "amounts", "bytes", "values", "end"});
+        RespFcnCode.put("1", new String[]{"bytes", "bit", "end"});
+        RespFcnCode.put("2", new String[]{"bytes", "bit", "end"});
+        RespFcnCode.put("3", new String[]{"bytes", "values", "end"});
+        RespFcnCode.put("4", new String[]{"bytes", "values", "end"});
+        RespFcnCode.put("5", new String[]{"add", "status", "end"});
+        RespFcnCode.put("6", new String[]{"add", "value", "end"});
+        RespFcnCode.put("15", new String[]{"add", "amounts", "end"});
+        RespFcnCode.put("16", new String[]{"add", "amounts", "end"});
     }
 
     static void ClrError(){
-        ParsedReq.removeAll("Error");
-        ParsedReq.put("Error", 0);
+        ParsedResp.removeAll("Error");
+        ParsedResp.put("Error", 0);
     }
 
     static void IncLine(int n){
-        ParsedReq.removeAll("line");
-        ParsedReq.put("line", n);
+        ParsedResp.removeAll("line");
+        ParsedResp.put("line", n);
     }
 
     static void IncAtmpt(){
-        int tmp = Iterables.getLast(ParsedReq.get("attempt"));
-        ParsedReq.removeAll("attempt");
-        ParsedReq.put("attempt", tmp +1);
+        int tmp = Iterables.getLast(ParsedResp.get("attempt"));
+        ParsedResp.removeAll("attempt");
+        ParsedResp.put("attempt", tmp +1);
     }
 
     static void TrkrWatch(int t){
-        ParsedReq.removeAll("InstTracker");
-        ParsedReq.put("InstTracker", t);
+        ParsedResp.removeAll("InstTracker");
+        ParsedResp.put("InstTracker", t);
     }
 
     static void TrkrRst(){
-        ParsedReq.removeAll("InstTracker");
-        ParsedReq.put("InstTracker", 0);
+        ParsedResp.removeAll("InstTracker");
+        ParsedResp.put("InstTracker", 0);
     }
 
-    public static Multimap<String, Integer> ParseStringRequest(String[] array, int i) {
+    public static Multimap<String, Integer> ParseStringResponse(String[] array, int i) {
         boolean KeepGoing = true;
 
         int ReqPos = 0;
 
         //LastAt 0 == start at ID
         //LastAt 1 == Start at Function Code
-        //LastAt 2 == Start at ReqFcnCode map
+        //LastAt 2 == Start at RespFcnCode map
 
-        if (Iterables.getLast(ParsedReq.get("LastAt")).equals(0)) {
+        if (Iterables.getLast(ParsedResp.get("LastAt")).equals(0)) {
             try {
-                if (Iterables.getLast(ParsedReq.get("attempt")).equals(0)) {
+                if (Iterables.getLast(ParsedResp.get("attempt")).equals(0)) {
                     i++;
                     if (i > (array.length - 1)) {
-                        ParsedReq.put("Error", 1);
+                        ParsedResp.put("Error", 1);
                         IncAtmpt();
-                        return ParsedReq;
+                        return ParsedResp;
                     }
                 }
-                ParsedReq.put("id", Integer.parseInt(array[i], 16));
-                ParsedReq.put("LastAt", 1);
+                ParsedResp.put("id", Integer.parseInt(array[i], 16));
+                ParsedResp.put("LastAt", 1);
                 i++;
-                ParsedReq.put("fcn", Integer.parseInt(array[i], 16));
-                ParsedReq.removeAll("LastAt");
-                ParsedReq.put("LastAt", 2);
+                ParsedResp.put("fcn", Integer.parseInt(array[i], 16));
+                ParsedResp.removeAll("LastAt");
+                ParsedResp.put("LastAt", 2);
                 i++;
             } catch (ArrayIndexOutOfBoundsException e) {
-                ParsedReq.put("Error", 1);
+                ParsedResp.put("Error", 1);
                 IncAtmpt();
+                SRq.ArrPos = i;
 
-                return ParsedReq;
+                return ParsedResp;
             }
-        } else if (Iterables.getLast(ParsedReq.get("LastAt")) == 1) {
-            ParsedReq.put("fcn", Integer.parseInt(array[i], 16));
+        } else if (Iterables.getLast(ParsedResp.get("LastAt")) == 1) {
+            ParsedResp.put("fcn", Integer.parseInt(array[i], 16));
             i++;
-            ParsedReq.put("LastAt", 2);
-        } else if (Iterables.getLast(ParsedReq.get("LastAt")) == 2) {
-            ReqPos = Iterables.getLast(ParsedReq.get("ReqPos"));
+            ParsedResp.put("LastAt", 2);
+        } else if (Iterables.getLast(ParsedResp.get("LastAt")) == 2) {
+            ReqPos = Iterables.getLast(ParsedResp.get("ReqPos"));
         }
 
         //Start parsing
-        String id = String.valueOf(Iterables.getLast(ParsedReq.get("fcn")));
-        String[] FcnCodeSteps = ReqFcnCode.get(id);
+        String id = String.valueOf(Iterables.getLast(ParsedResp.get("fcn")));
+        String[] FcnCodeSteps = RespFcnCode.get(id);
         while (KeepGoing) {
 
             int tracker = 0;
-            ParsedReq.removeAll("Error"); // clear out the Error for new loop
+            ParsedResp.removeAll("Error"); // clear out the Error for new loop
             try {
                 //**********************************************************************************************
                 //
@@ -132,18 +133,18 @@ class ParseStringRequest {
                     case "add":
                         tracker = 2;
 
-                        if (Iterables.getLast(ParsedReq.get("InstTracker")) != 0) {
+                        if (Iterables.getLast(ParsedResp.get("InstTracker")) != 0) {
 
-                            tracker = Iterables.getLast(ParsedReq.get("InstTracker"));
-                            ParsedReq.removeAll("InstTracker");
+                            tracker = Iterables.getLast(ParsedResp.get("InstTracker"));
+                            ParsedResp.removeAll("InstTracker");
 
                         }
                         while (tracker > 0) {
 
-                            String tmp = Integer.toHexString(Iterables.getLast(ParsedReq.get("add")));
+                            String tmp = Integer.toHexString(Iterables.getLast(ParsedResp.get("add")));
                             tmp = tmp + array[i];
                             tracker--;
-                            ParsedReq.put("add", Integer.parseInt(tmp, 16));
+                            ParsedResp.put("add", Integer.parseInt(tmp, 16));
                             i++;
 
                             TrkrWatch(tracker);
@@ -159,15 +160,15 @@ class ParseStringRequest {
                     case "amounts":
                         tracker = 2;
 
-                        if (!Iterables.getLast(ParsedReq.get("InstTracker")).equals(0)) {
-                            tracker = Iterables.getLast(ParsedReq.get("InstTracker"));
+                        if (!Iterables.getLast(ParsedResp.get("InstTracker")).equals(0)) {
+                            tracker = Iterables.getLast(ParsedResp.get("InstTracker"));
                         }
                         while (tracker > 0) {
 
-                            String tmp = Integer.toHexString(Iterables.getLast(ParsedReq.get("amounts")));
+                            String tmp = Integer.toHexString(Iterables.getLast(ParsedResp.get("amounts")));
                             tmp = tmp + array[i];
                             tracker--;
-                            ParsedReq.put("amounts", Integer.parseInt(tmp, 16));
+                            ParsedResp.put("amounts", Integer.parseInt(tmp, 16));
                             i++;
                             TrkrWatch(tracker);
                         }
@@ -183,14 +184,14 @@ class ParseStringRequest {
                     case "status":
                         tracker = 2;
 
-                        if (!Iterables.getLast(ParsedReq.get("InstTracker")).equals(0)) {
-                            tracker = Iterables.getLast(ParsedReq.get("InstTracker"));
+                        if (!Iterables.getLast(ParsedResp.get("InstTracker")).equals(0)) {
+                            tracker = Iterables.getLast(ParsedResp.get("InstTracker"));
                         }
                         while (tracker > 0) {
-                            String tmp = Integer.toHexString(Iterables.getLast(ParsedReq.get("status")));
+                            String tmp = Integer.toHexString(Iterables.getLast(ParsedResp.get("status")));
                             tmp = tmp + array[i];
                             tracker--;
-                            ParsedReq.put("status", Integer.parseInt(tmp, 16));
+                            ParsedResp.put("status", Integer.parseInt(tmp, 16));
                             i++;
                             TrkrWatch(tracker);
                         }
@@ -206,15 +207,15 @@ class ParseStringRequest {
                     case "value":
                         tracker = 2;
 
-                        if (Iterables.getLast(ParsedReq.get("InstTracker")) != 0) {
-                            tracker = Iterables.getLast(ParsedReq.get("InstTracker"));
+                        if (Iterables.getLast(ParsedResp.get("InstTracker")) != 0) {
+                            tracker = Iterables.getLast(ParsedResp.get("InstTracker"));
                         }
                         while (tracker > 0) {
 
-                            String tmp = Integer.toHexString(Iterables.getLast(ParsedReq.get("value")));
+                            String tmp = Integer.toHexString(Iterables.getLast(ParsedResp.get("value")));
                             tmp = tmp + array[i];
                             tracker--;
-                            ParsedReq.put("value", Integer.parseInt(tmp, 16));
+                            ParsedResp.put("value", Integer.parseInt(tmp, 16));
                             i++;
                             TrkrWatch(tracker);
                         }
@@ -228,8 +229,8 @@ class ParseStringRequest {
                     //
                     //**********************************************************************************************
                     case "bytes":
-                        ParsedReq.removeAll("bytes");
-                        ParsedReq.put("bytes", Integer.parseInt(array[i], 16));
+                        ParsedResp.removeAll("bytes");
+                        ParsedResp.put("bytes", Integer.parseInt(array[i], 16));
                         i++;
 
                         break;
@@ -241,16 +242,17 @@ class ParseStringRequest {
                     //**********************************************************************************************
                     case "bit":
 
-                        tracker = Iterables.getLast(ParsedReq.get("InstTracker"));
+                        tracker = Iterables.getLast(ParsedResp.get("InstTracker"));
 
-                        if (!Iterables.getLast(ParsedReq.get("InstTracker")).equals(Iterables.getLast(ParsedReq.get("bytes")))) {
-                            tracker = Iterables.getLast(ParsedReq.get("bytes"));
+
+                        if (Iterables.getLast(ParsedResp.get("InstTracker")).equals(0)) {
+                            tracker = Iterables.getLast(ParsedResp.get("bytes"));
                         }
+
                         while (tracker > 0) {
-                            ParsedReq.put("bit", Integer.parseInt(array[i]));
+                            ParsedResp.put("bit", Integer.parseInt(array[i]));
                             tracker--;
                             i++;
-                            //Clear Key's collection to ensure no mixup.
                             TrkrWatch(tracker);
                         }
                         TrkrRst();
@@ -264,10 +266,10 @@ class ParseStringRequest {
                     //**********************************************************************************************
                     case "values":
 
-                        tracker = Iterables.getLast(ParsedReq.get("bytes")) / 2;
+                        tracker = Iterables.getLast(ParsedResp.get("bytes")) / 2;
 
-                        if (!(Iterables.getLast(ParsedReq.get("InstTracker")).equals(Iterables.getLast(ParsedReq.get("bytes")) / 2)) && !Iterables.getLast(ParsedReq.get("InstTracker")).equals(0)) {
-                            tracker = Iterables.getLast(ParsedReq.get("InstTracker"));
+                        if (!(Iterables.getLast(ParsedResp.get("InstTracker")).equals(Iterables.getLast(ParsedResp.get("bytes")) / 2)) && !Iterables.getLast(ParsedResp.get("InstTracker")).equals(0)) {
+                            tracker = Iterables.getLast(ParsedResp.get("InstTracker"));
                         }
                         while (tracker > 0) {
                             String tmp = array[i];
@@ -275,7 +277,7 @@ class ParseStringRequest {
                             tmp = tmp + array[i];
                             tracker--;
                             i++;
-                            ParsedReq.put("values", Integer.parseInt(tmp, 16));
+                            ParsedResp.put("values", Integer.parseInt(tmp, 16));
 
                             //Clear Key's collection to ensure no mixup.
                             TrkrWatch(tracker);
@@ -284,24 +286,27 @@ class ParseStringRequest {
                         break;
 
                     case "end":
+                        SRq.FinishedReq = true;
                         KeepGoing = false;
                         SRq.FinishedReq = true;
-                        ParsedReq.put("Error", 0);
+                        ParsedResp.put("Error", 0);
+                        SRq.ArrPos = i;
                         break;
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
-                ParsedReq.put("Error", 1);
-                ParsedReq.put("ReqPos", ReqPos);
+                ParsedResp.put("Error", 1);
+                ParsedResp.put("ReqPos", ReqPos);
                 TrkrWatch(tracker);
                 IncAtmpt();
-                return ParsedReq;
+                SRq.ArrPos = i;
+                return ParsedResp;
 
             }
             ReqPos++;
 
         }
 
-        return ParsedReq;
+        return ParsedResp;
 
 
     }

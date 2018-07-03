@@ -1,10 +1,10 @@
 import com.google.common.collect.Iterables;
-
 import java.io.File;
 import java.util.*;
 
+@SuppressWarnings("Duplicates")
 public class SerialRequest {
-
+    static ParseSelect PS = new ParseSelect();
     static boolean FinishedReq = false;
 
     private static ParseStringRequest PSR = new ParseStringRequest();
@@ -46,14 +46,20 @@ public class SerialRequest {
         }
     }
 
+    public static void parse() throws Exception {
 
-    public static void main(String[] args) throws Exception {
-        File file = new File("C:\\Users\\escno\\Desktop\\1stCommEstablished_5_30_18PCB-Log.txt"); //change your path here to the hexcode.txt directory
-        Scanner sc = new Scanner(file);
+        Scanner sc;
+        try {
+           sc = new Scanner(PS.file);
+        } catch(NullPointerException e){
+            System.out.println("No File Selected");
+            return;
+        }
+
         int n = 3;
         int ArrPos = 14;
         PSR.InitializeMap();
-        scan(file, sc);
+        scan(PS.file, sc);
         while (HasLine || ArrPos < 14) {
 
 
@@ -64,17 +70,16 @@ public class SerialRequest {
             String[] array = Scanned.get(ArrPos);
 
             if (n == 3) {
-                PSR.ParsedReq.put("attempt", 1);
+                PSR.IncAtmpt();
                 PSR.ParseStringRequest(array, 0);
-                PSR.ParsedReq.removeAll("Error");
-                PSR.ParsedReq.put("Error", 0);
-                scan(file, sc);
+                PSR.ClrError();
+                scan(PS.file, sc);
                 ArrPos--;
                 array = Scanned.get(14);
                 PSR.ParseStringRequest(array, 0);
-                PSR.ParsedReq.put("line", n);
-                printout.startTable();
-                printout.ReqPrint();
+                PSR.IncLine(n);
+                PrintReq.startTable();
+                PrintReq.ReqPrint();
                 PSR.InitializeMap();
                 n++;
                 FinishedReq = false;
@@ -90,23 +95,21 @@ public class SerialRequest {
                             while (!FinishedReq && !breakSwitch) {
                                 PSR.ParseStringRequest(array, i);
                                 while (Iterables.getLast(PSR.ParsedReq.get("Error")).equals(1)) {
-                                    PSR.ParsedReq.removeAll("Error");
-                                    PSR.ParsedReq.put("Error", 0);
-                                    scan(file, sc);
+                                    PSR.ClrError();
+                                    scan(PS.file, sc);
                                     ArrPos--;
                                     array = Scanned.get(14);
                                     if (!array[0].equals("Log") && !array[0].equals("")) {
                                         PSR.ParseStringRequest(array, 0);
                                     } else {
                                         PSR.InitializeMap();
-                                        scan(file, sc);
+                                        scan(PS.file, sc);
                                         breakSwitch = true;
                                     }
                                 }
                                 if (FinishedReq) {
-                                    PSR.ParsedReq.removeAll("line");
-                                    PSR.ParsedReq.put("line", n);
-                                    printout.ReqPrint();
+                                    PSR.IncLine(n);
+                                    PrintReq.ReqPrint();
                                     PSR.InitializeMap();
                                     array = Scanned.get(ArrPos);
 
@@ -122,7 +125,7 @@ public class SerialRequest {
             }else{
                 n++;
             }
-            scan(file, sc);
+            scan(PS.file, sc);
         }
 
     }
