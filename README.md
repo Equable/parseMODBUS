@@ -18,7 +18,10 @@
 
 <h2><b><u>Looks</u></b></h2>
 
-![](https://raw.githubusercontent.com/Equable/parseMODBUS/master/hexcode%20parse.PNG)
+![New UI](https://raw.githubusercontent.com/Equable/parseMODBUS/master/hexcode%20parse.PNG)
+
+
+![Select File via Browse](https://raw.githubusercontent.com/Equable/parseMODBUS/master/hexcode%20parse.PNG)
 
 <h2><b><u>Dependencies</u></b></h2>
 
