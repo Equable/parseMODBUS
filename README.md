@@ -30,8 +30,7 @@
 
 <h2><b><u>Version</u></b></h2>
 
->* 1.3
->   * Working JAR now available
+>* 1.3 Working JAR now available
 >   * fixed issue where you had to close application in order to parse in a different mode or change file
 >   * can now parse the same file multiple times in each mode. will automatically refresh the table
 >* 1.2 App UI
