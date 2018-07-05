@@ -1,7 +1,7 @@
 <h1><b>Parse MODBUS Protocol</b></h1>
 
 <h3><b>Author: Louis Huerta-Blake</b></h3>
-<h4><b>README Last Edited: 7/2/2018</b><h4>
+<h4><b>README Last Edited: 7/5/2018</b><h4>
 
 <h2><b><u>Summary</u></b></h2>
 
@@ -14,7 +14,7 @@
 
 <h2><b><u>How To Use</u></b></h2>
 
-> Rename the file path to the working path of your hexcode.txt file to use this
+> Just download the JAR file in source and the hexcode.txt then run
 
 <h2><b><u>Looks</u></b></h2>
 
@@ -30,6 +30,10 @@
 
 <h2><b><u>Version</u></b></h2>
 
+>* 1.3
+>   * Working JAR now available
+>   * fixed issue where you had to close application in order to parse in a different mode or change file
+>   * can now parse the same file multiple times in each mode. will automatically refresh the table
 >* 1.2 App UI
 >   * Now have new UI to select between Response and Request
 >   * Data for response will be put into table on new UI. (request to follow soon)
