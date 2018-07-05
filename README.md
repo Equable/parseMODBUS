@@ -14,7 +14,7 @@
 
 <h2><b><u>How To Use</u></b></h2>
 
-> Just download the JAR file in source and the hexcode.txt then run
+> Just download the JAR file in src file and the hexcode.txt then run
 
 <h2><b><u>Looks</u></b></h2>
 
