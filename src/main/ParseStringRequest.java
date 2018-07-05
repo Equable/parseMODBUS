@@ -1,3 +1,5 @@
+package main;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Multimap;
@@ -85,7 +87,8 @@ class ParseStringRequest {
         if (Iterables.getLast(ParsedReq.get("LastAt")).equals(0)) {
             try {
                 if (Iterables.getLast(ParsedReq.get("attempt")).equals(0)) {
-                    i++;
+                    if(!SerialRequest.BegLog)
+                        i++;
                     if (i > (array.length - 1)) {
                         ParsedReq.put("Error", 1);
                         IncAtmpt();
@@ -102,6 +105,7 @@ class ParseStringRequest {
             } catch (ArrayIndexOutOfBoundsException e) {
                 ParsedReq.put("Error", 1);
                 IncAtmpt();
+                SerialRequest.ArrPos = i;
 
                 return ParsedReq;
             }
@@ -243,14 +247,15 @@ class ParseStringRequest {
 
                         tracker = Iterables.getLast(ParsedReq.get("InstTracker"));
 
-                        if (!Iterables.getLast(ParsedReq.get("InstTracker")).equals(Iterables.getLast(ParsedReq.get("bytes")))) {
+
+                        if (Iterables.getLast(ParsedReq.get("InstTracker")).equals(0)) {
                             tracker = Iterables.getLast(ParsedReq.get("bytes"));
                         }
+
                         while (tracker > 0) {
                             ParsedReq.put("bit", Integer.parseInt(array[i]));
                             tracker--;
                             i++;
-                            //Clear Key's collection to ensure no mixup.
                             TrkrWatch(tracker);
                         }
                         TrkrRst();
@@ -285,8 +290,9 @@ class ParseStringRequest {
 
                     case "end":
                         KeepGoing = false;
-                        SRq.FinishedReq = true;
+                        SerialRequest.FinishedReq = true;
                         ParsedReq.put("Error", 0);
+                        SerialRequest.ArrPos = i;
                         break;
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
@@ -294,6 +300,7 @@ class ParseStringRequest {
                 ParsedReq.put("ReqPos", ReqPos);
                 TrkrWatch(tracker);
                 IncAtmpt();
+                SerialRequest.ArrPos = i;
                 return ParsedReq;
 
             }

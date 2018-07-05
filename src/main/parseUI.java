@@ -1,6 +1,8 @@
+package main;
+
 import javafx.application.Application;
 
-import javafx.beans.property.SimpleStringProperty;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,6 +33,7 @@ public class parseUI extends Application {
     final Label notification = new Label ();
     final TextArea text = new TextArea ("");
     final Button Done = new Button("Parse");
+    final Button Reset = new Button("Reset");
 
     String address = " ";
 
@@ -89,8 +92,9 @@ public class parseUI extends Application {
         grid.setPadding(new Insets(5, 5, 5, 5));
         grid.add(new Label("Mode: "), 0, 0);
         grid.add(mode, 1, 0);
-        grid.add(new Label("Filter: "), 6, 0);
-        grid.add(filterComboBox, 7,0);
+        //to be added in new version
+        //grid.add(new Label("Filter: "), 6, 0);
+        //grid.add(filterComboBox, 7,0);
         grid.add(table, 0, 2, 8, 1);
         grid.add(button, 0, 3);
         grid.add (notification, 1, 3, 3, 1);
@@ -105,16 +109,29 @@ public class parseUI extends Application {
                     System.out.println(selectedFile);
                     ParseSelect.file = selectedFile;
                     grid.add(Done, 7,3);
-                    grid.setHalignment(Done, HPos.RIGHT);
+                    GridPane.setHalignment(Done, HPos.RIGHT);
                 }
             }
 
         });
 
+//        Reset.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                stage.close();
+//                data.clear();
+//                table.getItems().clear();
+//                table.getColumns().clear();
+//                Platform.runLater(() -> new parseUI().start(stage));
+//            }
+//        });
+
         Done.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 ParseSelect.mode = mode.getValue().toString();
+                data.clear();
+                table.getItems().clear();
                 switch(ParseSelect.mode){
                     case "Request":
                         try {

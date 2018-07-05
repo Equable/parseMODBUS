@@ -1,5 +1,5 @@
-import com.google.common.collect.Iterables;
-import javafx.application.Application;
+package main;
+
 import java.io.File;
 import java.util.*;
 
@@ -20,7 +20,7 @@ public class SerialResponse {
     static int LinesScanned = 0;
 
 
-    private static void scan(File file, Scanner sc) throws Exception {
+    private static void scan(File file, Scanner sc) {
 
 
         if (FirstScan) {
@@ -52,10 +52,11 @@ public class SerialResponse {
     }
 
     public static void parse() throws Exception {
-
+        FirstScan = true;
+        Scanned.clear();
         Scanner sc;
         try {
-            sc = new Scanner(PS.file);
+            sc = new Scanner(ParseSelect.file);
         } catch(NullPointerException e){
             System.out.println("No File Selected");
             return;
@@ -63,30 +64,29 @@ public class SerialResponse {
 
         int n = 3;
 
-        scan(PS.file, sc);
+        scan(ParseSelect.file, sc);
         String[] array = Scanned.get(14);
-        PrintResp.startTable();
         while (HasLine) {
             if (!array[0].equals("") && !(array[0].equals("Log"))) {
-                PSR.InitializeMap();
+                ParseStringResponse.InitializeMap();
                 ArrPos = 0;
                 while(ArrPos < array.length){
                     FinishedReq = false;
 
                     switch (array[ArrPos]) {
                         case "R+":
-                            PSR.IncLine(n);
-                            PSR.ParseStringResponse(array,ArrPos);
+                            ParseStringResponse.IncLine(n);
+                            ParseStringResponse.ParseStringResponse(array,ArrPos);
                             while(!FinishedReq){
                                 n++;
                                 ArrPos = 0;
-                                PSR.ClrError();
-                                scan(PS.file, sc);
+                                ParseStringResponse.ClrError();
+                                scan(ParseSelect.file, sc);
                                 array = Scanned.get(14);
-                                PSR.ParseStringResponse(array, ArrPos);
+                                ParseStringResponse.ParseStringResponse(array, ArrPos);
                             }
-                            PR.RespPrint();
-                            PSR.InitializeMap();
+                            PrintResp.RespPrint();
+                            ParseStringResponse.InitializeMap();
                             break;
 
                         default:
@@ -97,21 +97,24 @@ public class SerialResponse {
                 }
                 n++;
                 ArrPos = 0;
-                PSR.ClrError();
-                scan(PS.file, sc);
-                PSR.InitializeMap();
+                ParseStringResponse.ClrError();
+                scan(ParseSelect.file, sc);
+                ParseStringResponse.InitializeMap();
                 array = Scanned.get(14);
 
             }else{
                 n++;
                 ArrPos = 0;
-                PSR.ClrError();
-                scan(PS.file, sc);
-                PSR.InitializeMap();
+                ParseStringResponse.ClrError();
+                scan(ParseSelect.file, sc);
+                ParseStringResponse.InitializeMap();
                 array = Scanned.get(14);
             }
 
         }
+        sc.reset();
+        sc.close();
+        HasLine = true;
 
     }
 
