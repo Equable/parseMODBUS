@@ -1,7 +1,7 @@
 <h1><b>Parse MODBUS Protocol</b></h1>
 
 <h3><b>Author: Louis Huerta-Blake</b></h3>
-<h4><b>README Last Edited: 6/16/2018</b><h4>
+<h4><b>README Last Edited: 7/2/2018</b><h4>
 
 <h2><b><u>Summary</u></b></h2>
 
@@ -18,7 +18,10 @@
 
 <h2><b><u>Looks</u></b></h2>
 
-![](https://raw.githubusercontent.com/Equable/parseMODBUS/master/hexcode%20parse.PNG)
+![New UI](https://raw.githubusercontent.com/Equable/parseMODBUS/master/hexcode%20parse.PNG)
+
+
+![Select File via Browse](https://raw.githubusercontent.com/Equable/parseMODBUS/master/hexcode%20parse%20browse.PNG)
 
 <h2><b><u>Dependencies</u></b></h2>
 
@@ -27,6 +30,9 @@
 
 <h2><b><u>Version</u></b></h2>
 
+>* 1.2 App UI
+>   * Now have new UI to select between Response and Request
+>   * Data for response will be put into table on new UI. (request to follow soon)
 >* 1.1 File Select
 >   * Can now select file on application run, no longer need to manually change path in code
 >   * Due to JDK 8, JFileChooser appears very tiny on high dpi screens. Will look into JavaFX at a later date.
