@@ -1,7 +1,7 @@
 <h1><b>Parse MODBUS Protocol</b></h1>
 
 <h3><b>Author: Louis Huerta-Blake</b></h3>
-<h4><b>README Last Edited: 7/2/2018</b><h4>
+<h4><b>README Last Edited: 7/8/2018</b><h4>
 
 <h2><b><u>Summary</u></b></h2>
 
@@ -9,18 +9,28 @@
 
 <h2><b><u>How It Works</u></b></h2>
 
->coming soon
+> 1. The application starts the Javafx UI
+> 2. Clicking browse opens up the OS's standard file search UI to select a txt file.
+> 3. Assuming the correct text file is selected. Pressing the Parse button begins the process dependant on the mode selected
+> 4. A scanner goes through line by line checking for the presence of a response or a request depending and begins to parse.
+> 5. The parse class fills a hash map based on the function code. Which is then used to create a new serial data object
+per response or request. For those that go multiple lines the object is created for each value.
+> 6. The serial data is then printed out on the table shown in the center of the UI and can be sorted.
 
 
 <h2><b><u>How To Use</u></b></h2>
 
-> Rename the file path to the working path of your hexcode.txt file to use this
+> Download the parseMODBUS.jar file located in src. Just open the application to run
 
 <h2><b><u>Looks</u></b></h2>
 
+> Raw modbus serial communication log
+![Unparsed Modbus](https://raw.githubusercontent.com/Equable/parseMODBUS/master/Unparsed%20Modbus%20protocol.PNG)
+
+> Resulting parsed table
 ![New UI](https://raw.githubusercontent.com/Equable/parseMODBUS/master/hexcode%20parse.PNG)
 
-
+> Browse option view
 ![Select File via Browse](https://raw.githubusercontent.com/Equable/parseMODBUS/master/hexcode%20parse%20browse.PNG)
 
 <h2><b><u>Dependencies</u></b></h2>
@@ -30,6 +40,10 @@
 
 <h2><b><u>Version</u></b></h2>
 
+>* 1.3 JAR File
+>   * Created executable
+>   * No longer need to reload app when selecting new mode or file
+>   * All columns sortable
 >* 1.2 App UI
 >   * Now have new UI to select between Response and Request
 >   * Data for response will be put into table on new UI. (request to follow soon)

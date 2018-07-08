@@ -104,7 +104,7 @@ class ParseStringResponse {
             } catch (ArrayIndexOutOfBoundsException e) {
                 ParsedResp.put("Error", 1);
                 IncAtmpt();
-                SRq.ArrPos = i;
+                SerialResponse.ArrPos = i;
 
                 return ParsedResp;
             }
@@ -126,8 +126,8 @@ class ParseStringResponse {
             try {
                 //**********************************************************************************************
                 //
-                //Location in memory for request
-                //Function Code(s): 01, 02, 03, 04, 05, 06, 15, 16
+                //Location in memory for response
+                //Function Code(s): 5, 6, 15, 16
                 //
                 //**********************************************************************************************
                 switch (FcnCodeSteps[ReqPos]) {
@@ -156,7 +156,7 @@ class ParseStringResponse {
                     //**********************************************************************************************
                     //
                     //Total number of changes (type depends on function code)
-                    //Function Code(s): 01, 02, 03, 04, 15, 16
+                    //Function Code(s): 15, 16
                     //
                     //**********************************************************************************************
                     case "amounts":
@@ -239,7 +239,7 @@ class ParseStringResponse {
                     //**********************************************************************************************
                     //
                     //Bit values for each byte
-                    //Fcn Code(s): 15
+                    //Fcn Code(s): 1, 2, 3, 4
                     //
                     //**********************************************************************************************
                     case "bit":
@@ -263,7 +263,7 @@ class ParseStringResponse {
                     //**********************************************************************************************
                     //
                     //Values to be written per register
-                    //Fcn Code(s): 15, 16
+                    //Fcn Code(s): 3, 4
                     //
                     //**********************************************************************************************
                     case "values":
@@ -288,11 +288,11 @@ class ParseStringResponse {
                         break;
 
                     case "end":
-                        SRq.FinishedReq = true;
+                        SerialResponse.FinishedReq = true;
                         KeepGoing = false;
-                        SRq.FinishedReq = true;
+                        SerialResponse.FinishedReq = true;
                         ParsedResp.put("Error", 0);
-                        SRq.ArrPos = i;
+                        SerialResponse.ArrPos = i;
                         break;
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
@@ -300,7 +300,7 @@ class ParseStringResponse {
                 ParsedResp.put("ReqPos", ReqPos);
                 TrkrWatch(tracker);
                 IncAtmpt();
-                SRq.ArrPos = i;
+                SerialResponse.ArrPos = i;
                 return ParsedResp;
 
             }

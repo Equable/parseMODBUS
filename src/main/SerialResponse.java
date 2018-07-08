@@ -66,6 +66,17 @@ public class SerialResponse {
 
         scan(ParseSelect.file, sc);
         String[] array = Scanned.get(14);
+        String[] previous = Scanned.get(13);
+
+        // Format of prosoft text files is as follows:
+        // Line 1: Blank
+        // Line 2: "Log Start"
+        // Line 3: (begin with request
+        // purpose of the following IF is to ensure that a proper text file is selected
+        // if "Log" is not present on line 2 then throw an exception to tell the user why.
+
+        if(!previous[0].equals("Log"))
+            throw new Exception("File Selected not a proper ProSoft Log file");
         while (HasLine) {
             if (!array[0].equals("") && !(array[0].equals("Log"))) {
                 ParseStringResponse.InitializeMap();

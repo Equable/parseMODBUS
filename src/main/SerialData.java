@@ -1,8 +1,7 @@
 package main;
 
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
+
 
 public class SerialData {
     public final SimpleObjectProperty Line;

@@ -78,10 +78,10 @@ public class PrintReq {
                 size = ParseStringRequest.ParsedReq.get("bit").size();
                 for (int i = 2; i < size; i++) {
                     parseUI.data.add(new SerialData(
-                            null,
-                            null,
-                            null,
-                            null,
+                            Iterables.getLast(ParseStringRequest.ParsedReq.get("line")),
+                            Iterables.getLast(ParseStringRequest.ParsedReq.get("id")),
+                            Iterables.getLast(ParseStringRequest.ParsedReq.get("fcn")),
+                            Iterables.getLast(ParseStringRequest.ParsedReq.get("add"))+i*8,
                             null,
                             null,
                             null,
@@ -109,10 +109,10 @@ public class PrintReq {
                 size = ParseStringRequest.ParsedReq.get("values").size();
                 for (int i = 2; i < size; i++) {
                     parseUI.data.add(new SerialData(
-                            null,
-                            null,
-                            null,
-                            null,
+                            Iterables.getLast(ParseStringRequest.ParsedReq.get("line")),
+                            Iterables.getLast(ParseStringRequest.ParsedReq.get("id")),
+                            Iterables.getLast(ParseStringRequest.ParsedReq.get("fcn")),
+                            Iterables.getLast(ParseStringRequest.ParsedReq.get("add"))+i,
                             null,
                             null,
                             null,

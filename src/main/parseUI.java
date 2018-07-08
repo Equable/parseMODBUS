@@ -2,7 +2,7 @@ package main;
 
 import javafx.application.Application;
 
-import javafx.application.Platform;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,7 +28,7 @@ public class parseUI extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
+    final Alert alert = new Alert(Alert.AlertType.ERROR);
     final Button button = new Button ("Browse");
     final Label notification = new Label ();
     final TextArea text = new TextArea ("");
@@ -42,22 +42,31 @@ public class parseUI extends Application {
         stage.setTitle("Parse MODBUS");
         Scene scene = new Scene(new Group(), 810, 480);
 
+        // Dialog box for wrong file select
+        //
+        alert.setTitle("Error!");
+        alert.setHeaderText(null);
+
+        //Select what mode to parse, the requests or the responses
+        //
         final ComboBox mode = new ComboBox();
         mode.getItems().addAll(
                 "Request",
                 "Response"
         );
 
+        /*      //Select filter mode
         final ComboBox filterComboBox = new ComboBox();
         filterComboBox.getItems().addAll(
                 "Line",
                 "Function",
                 "Address",
                 "None"
-        );
+        );*/
         table.setEditable(true);
 
-
+        //Create Columns and set the values they're going to display and as what data type
+        //
         TableColumn<SerialData,Integer> lineCol = new TableColumn<SerialData,Integer>("Line");
         lineCol.setCellValueFactory(new PropertyValueFactory<SerialData,Integer>("Line"));
         TableColumn<SerialData,Integer> idCol = new TableColumn<SerialData,Integer>("ID");
@@ -83,7 +92,7 @@ public class parseUI extends Application {
         table.getColumns().addAll(lineCol,idCol,fcnCol,addCol,amntCol,statCol,valCol,bytCol,bitCol,valsCol);
 
 
-        filterComboBox.setValue("None");
+//      filterComboBox.setValue("None");
         mode.setValue("Request");
 
         GridPane grid = new GridPane();
@@ -99,10 +108,17 @@ public class parseUI extends Application {
         grid.add(button, 0, 3);
         grid.add (notification, 1, 3, 3, 1);
 
+
+        //Opens file browser
         button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 final FileChooser fileChooser = new FileChooser();
+
+                //Filter to make only txt files selectable
+                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TEXT Files (*.txt)", "*.txt");
+                fileChooser.getExtensionFilters().add(extFilter);
+
                 final File selectedFile = fileChooser.showOpenDialog(stage);
                 if (selectedFile != null){
                     selectedFile.getAbsolutePath();
@@ -115,17 +131,9 @@ public class parseUI extends Application {
 
         });
 
-//        Reset.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                stage.close();
-//                data.clear();
-//                table.getItems().clear();
-//                table.getColumns().clear();
-//                Platform.runLater(() -> new parseUI().start(stage));
-//            }
-//        });
 
+        // Begins parse procedure and is dependent on the MODE selected
+        //
         Done.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -137,7 +145,8 @@ public class parseUI extends Application {
                         try {
                             SerialRequest.parse();
                         }catch(Exception e){
-                            System.out.println(e);
+                            alert.setContentText("Error:\n" + e + "\n\n Please restart application and ensure correct text file was selected and the Log file was unchanged");
+                            alert.showAndWait();
                         }
                         break;
 
@@ -145,7 +154,8 @@ public class parseUI extends Application {
                         try {
                             SerialResponse.parse();
                         }catch(Exception e){
-                            System.out.println(e);
+                            alert.setContentText("Error:\n" + e + "\n\n Please restart application and ensure correct text file was selected and the Log file was unchanged");
+                            alert.showAndWait();
                         }
                         break;
 
